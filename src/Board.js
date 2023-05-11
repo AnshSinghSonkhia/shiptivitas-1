@@ -1,9 +1,10 @@
 import React from 'react';
-import Dragula from 'dragula';
+import { useRef } from 'react';
 import 'dragula/dist/dragula.css';
 import Swimlane from './Swimlane';
 import './Board.css';
-import dragula from 'dragula';
+import Dragula from 'react-dragula';
+import { useEffect } from 'react';
 
 function Board (){
   const getClients = ()=> {
@@ -43,11 +44,6 @@ function Board (){
         complete: clients.filter(client => client.status && client.status === 'complete'),
       }
     }
-    const swimlanes = {
-      backlog: React.createRef(),
-      inProgress: React.createRef(),
-      complete: React.createRef(),
-    }
   
  
   const renderSwimlane = (name, clients, ref)=> {
@@ -58,19 +54,29 @@ function Board (){
   }
 
 
+  
+  const backlogRef = useRef();
+  const inprogressRef = useRef();
+  const completeRef = useRef();
+  useEffect(() => {
+      Dragula([backlogRef.current,inprogressRef.current,completeRef.current]);
+  }, []);
+
+
+
  
     return (
       <div className="Board">
         <div className="container-fluid">
-          <div className="row" >
-            <div className="col-md-4">
-              {renderSwimlane('Backlog', clientsArrayObjects.clients.backlog, swimlanes.backlog)}
+          <div className="row">
+            <div className="col-md-4" ref={backlogRef}>
+              {renderSwimlane('Backlog', clientsArrayObjects.clients.backlog, backlogRef)}
             </div>
-            <div className="col-md-4">
-              {renderSwimlane('In Progress', clientsArrayObjects.clients.inProgress, swimlanes.inProgress)}
+            <div className="col-md-4" ref = {inprogressRef}>
+              {renderSwimlane('In Progress', clientsArrayObjects.clients.inProgress, inprogressRef)}
             </div>
-            <div className="col-md-4">
-              {renderSwimlane('Complete', clientsArrayObjects.clients.complete, swimlanes.complete)}
+            <div className="col-md-4" ref = {completeRef}>
+              {renderSwimlane('Complete', clientsArrayObjects.clients.complete, completeRef)}
             </div>
           </div>
         </div>

@@ -7,11 +7,11 @@ import { useEffect } from 'react';
 
 function Swimlane ({name, clients, dragulaRef}) {
 
-  useEffect(() => {
-    if (dragulaRef.current) {
-      Dragula([dragulaRef.current]);
-    }
-  }, [dragulaRef]);
+  // useEffect(() => {
+  //   if (dragulaRef.current) {
+  //     Dragula([dragulaRef.current]);
+  //   }
+  // }, [dragulaRef]);
 
     return (
       <div className="Swimlane-column">
