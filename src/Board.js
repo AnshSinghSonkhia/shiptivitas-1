@@ -3,25 +3,10 @@ import Dragula from 'dragula';
 import 'dragula/dist/dragula.css';
 import Swimlane from './Swimlane';
 import './Board.css';
+import dragula from 'dragula';
 
-export default class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    const clients = this.getClients();
-    this.state = {
-      clients: {
-        backlog: clients.filter(client => !client.status || client.status === 'backlog'),
-        inProgress: clients.filter(client => client.status && client.status === 'in-progress'),
-        complete: clients.filter(client => client.status && client.status === 'complete'),
-      }
-    }
-    this.swimlanes = {
-      backlog: React.createRef(),
-      inProgress: React.createRef(),
-      complete: React.createRef(),
-    }
-  }
-  getClients() {
+function Board (){
+  const getClients = ()=> {
     return [
       ['1','Stark, White and Abbott','Cloned Optimal Architecture', 'in-progress'],
       ['2','Wiza LLC','Exclusive Bandwidth-Monitored Implementation', 'complete'],
@@ -50,29 +35,46 @@ export default class Board extends React.Component {
       status: companyDetails[3],
     }));
   }
-  renderSwimlane(name, clients, ref) {
+    const clients = getClients();
+    const clientsArrayObjects= {
+      clients: {
+        backlog: clients.filter(client => !client.status || client.status === 'backlog'),
+        inProgress: clients.filter(client => client.status && client.status === 'in-progress'),
+        complete: clients.filter(client => client.status && client.status === 'complete'),
+      }
+    }
+    const swimlanes = {
+      backlog: React.createRef(),
+      inProgress: React.createRef(),
+      complete: React.createRef(),
+    }
+  
+ 
+  const renderSwimlane = (name, clients, ref)=> {
+    
     return (
       <Swimlane name={name} clients={clients} dragulaRef={ref}/>
     );
   }
 
-  render() {
+
+ 
     return (
       <div className="Board">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row" >
             <div className="col-md-4">
-              {this.renderSwimlane('Backlog', this.state.clients.backlog, this.swimlanes.backlog)}
+              {renderSwimlane('Backlog', clientsArrayObjects.clients.backlog, swimlanes.backlog)}
             </div>
             <div className="col-md-4">
-              {this.renderSwimlane('In Progress', this.state.clients.inProgress, this.swimlanes.inProgress)}
+              {renderSwimlane('In Progress', clientsArrayObjects.clients.inProgress, swimlanes.inProgress)}
             </div>
             <div className="col-md-4">
-              {this.renderSwimlane('Complete', this.state.clients.complete, this.swimlanes.complete)}
+              {renderSwimlane('Complete', clientsArrayObjects.clients.complete, swimlanes.complete)}
             </div>
           </div>
         </div>
       </div>
     );
   }
-}
+  export default Board;
